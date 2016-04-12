@@ -1,10 +1,9 @@
-FROM 52.73.25.76/pybombs-dev
-
-RUN tar xvfj /target.tar.bz2 && \
-    cd /bin && rm sh && ln -s bash sh
+FROM namccart/pybombs
+RUN tar xvfj /target.tar.bz2
 
 
-RUN apt-get update && \
+RUN cd /bin && rm sh && ln -s bash sh && \
+    apt-get update && \
     apt-get install -y libcanberra-gtk-module \
             gnome-terminal && \
     export uid=1000 gid=1000 && \
@@ -22,7 +21,7 @@ RUN apt-get update && \
     chown ${uid}:${gid} -R /home/developer && \
     chown ${uid}:${gid} -R /gnuradio-prefix
 
-# may want to add gnome-terminal as a dep for gnuradio to avoid this...
+
 ADD config.conf /config.conf
 RUN cat config.conf >> /home/developer/.gnuradio/config.conf
 
